@@ -1,0 +1,12 @@
+A
+AB
+ABC
+012
+       B
+       AB C
+       ACAB
+       34567890123 
+A
+BA
+AC
+012
