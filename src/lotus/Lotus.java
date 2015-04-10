@@ -4,27 +4,18 @@ import lotus.controller.Controller;
 import lotus.model.Game;
 import lotus.view.View;
 
-/** 
- * Main class for a Java implementation of the Lotus board game.
- * @author Richard
- *
- */
 public class Lotus implements Runnable {
-	private Game game;
-	private Controller controller;
-	private View view;
-	
-	/**
-	 * Runs the game.
-	 */
-	public void run() {
-		
+	private Controller lotus;
+
+	public Lotus() {
+		this.lotus = new Controller();
 	}
-	
-	/**
-	 * The main method for the game.
-	 * @param args Arguments that can be passed in to the program.
-	 */
+
+	public void run() {
+		new Thread(lotus).start();
+	}
+
 	public static void main(String[] args) {
+		new Thread(new Lotus()).start();
 	}
 }

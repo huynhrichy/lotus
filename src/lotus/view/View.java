@@ -1,16 +1,11 @@
 package lotus.view;
 
-/**
- * Concerns drawing the game to the console.
- * @author Richard
- *
- */
+import lotus.model.Game;
+
+// mainly for a view of the game; controller will print out user prompts
 public class View {
-	
-	/**
-	 * Draws the state of the board game to the console.
-	 */
-	private void drawBoard() {
-		
+
+	private void draw(Game game) {
+		// takes in a board object?
 	}
 }

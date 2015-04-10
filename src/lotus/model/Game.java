@@ -1,77 +1,41 @@
 package lotus.model;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-/**
- * Represents the overall Lotus game.
- * 
- * @author Richard
- *
- */
-public class Game implements Runnable {
+public class Game {
 	private Board board;
-	private Set<Player> players;
+	private List<Player> players;
 
-	/**
-	 * Constructs a default instance of Game.
-	 */
-	private Game() {
+	public Game() {
 		this.board = new Board();
-		this.players = new TreeSet<Player>();
+
+		this.players = new ArrayList<Player>();
 	}
 
-	/**
-	 * Resets the game to the beginning.
-	 */
+	public void addPlayers(int numberOfPlayers) {
+		int startingASCIIValue = 65;
+
+		for (int playerNumber = startingASCIIValue; playerNumber < numberOfPlayers
+				+ startingASCIIValue; ++playerNumber) {
+			this.players.add(new Player((char) playerNumber, numberOfPlayers));
+		}
+	}
+
 	private void resetGame() {
 
 	}
 
-	/**
-	 * Moves a player's piece.
-	 * 
-	 * @param playerNumber
-	 *            The number of the player whose piece will be moved.
-	 * @param pathID
-	 *            The ID of the path containing the piece to be moved.
-	 * @param pathIndex
-	 *            The index of the moving piece on its path.
-	 */
 	private void movePiece(int playerNumber, char pathID, int pathIndex) {
 	}
 
-	/**
-	 * Checks if the given move is possible.
-	 * 
-	 * @param playerNumber
-	 *            The number of the player whose piece will be moved.
-	 * @param pathID
-	 *            The ID of the path containing the piece to be moved.
-	 * @param pathIndex
-	 *            The index of the moving piece on its path.
-	 * @return Whether or not the move is possible.
-	 */
 	private boolean isMovePossible(int playerNumber, char pathID, int pathIndex) {
 		return false;
 	}
 
-	/**
-	 * Calculates and returns how many a spaces a given piece can move based on
-	 * the number of pieces it is stacked upon.
-	 * 
-	 * @param move
-	 *            The move being made.
-	 * @return The number of spaces this move can yield.
-	 */
 	private int getNumberOfSpacesToMove(Move move) {
 		return 0;
-	}
-
-	/**
-	 * Runs the game.
-	 */
-	public void run() {
-
 	}
 }
