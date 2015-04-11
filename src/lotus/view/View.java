@@ -7,5 +7,7 @@ public class View {
 
 	private void draw(Game game) {
 		// takes in a board object?
+		
+		System.out.println("");
 	}
 }

@@ -24,7 +24,7 @@ public class Player {
 	private void initializeStartingStacks(int numberOfPlayers) {
 		int numberOfStacks = numberOfPlayers < 3 ? 4 : 3;
 		
-		int stackHeight = numberOfPlayers < 3 ? 4 : 3;
+		int stackHeight = numberOfStacks;
 
 		for (int stackCount = 0; stackCount < numberOfStacks; ++stackCount) {
 			Deque<Piece> stack = new ArrayDeque<Piece>();
