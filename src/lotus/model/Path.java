@@ -14,8 +14,18 @@ public class Path {
 	//private char pathID;
 	private List<Space> spaces;
 	
-	private Path() {
+	public Path(int numberOfSpaces) {
 		//this.pathID = '0';
 		this.spaces = new ArrayList<Space>();
+		
+		for (int spaceIndex = 0; spaceIndex < numberOfSpaces; ++spaceIndex) {
+			this.spaces.add(new Space());
+		}
 	}
+
+	public List<Space> getSpaces() {
+		return spaces;
+	}
+	
+	
 }

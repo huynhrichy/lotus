@@ -15,7 +15,7 @@ public class Controller implements Runnable {
 
 	public Controller() {
 		this.game = new Game();
-		this.view = new View();
+		this.view = new View(game);
 		this.scanner = new Scanner(System.in);
 		this.currentPlayer = ' ';
 		// this.input = "";
@@ -29,6 +29,8 @@ public class Controller implements Runnable {
 		game.addPlayers(numberOfPlayers);
 		
 		currentPlayer = 'A';
+		
+		view.printGame();
 	}
 
 	public void run() {

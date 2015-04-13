@@ -38,4 +38,14 @@ public class Game {
 	private int getNumberOfSpacesToMove(Move move) {
 		return 0;
 	}
+
+	public Board getBoard() {
+		return board;
+	}
+
+	public List<Player> getPlayers() {
+		return players;
+	}
+	
+	
 }
