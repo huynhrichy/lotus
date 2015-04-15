@@ -1,7 +1,12 @@
 package lotus.view;
 
+import java.util.Deque;
+import java.util.List;
+
 import lotus.model.Game;
 import lotus.model.Path;
+import lotus.model.Piece;
+import lotus.model.Player;
 
 // mainly for a view of the game; controller will print out user prompts
 public class View {
@@ -15,13 +20,20 @@ public class View {
 		// takes in a board object?
 
 		printPath(game.getBoard().getPathX(), 'x', 0);
-		println("");
+		//println("");
 
 		printPath(game.getBoard().getPathZ(), 'z', 10);
-		println("");
+		//println("");
 
 		printPath(game.getBoard().getPathX(), 'y', 0);
-		println("");
+
+		println("\n---\n");
+
+		printPlayersStartingStacks();
+
+		println("\n---\n");
+
+		println("Player " + game.getActivePlayerID() + "'s turn.");
 	}
 
 	private void printPath(Path path, char pathID, int indentAmount) {
@@ -29,19 +41,25 @@ public class View {
 
 		String indent = createIndent(indentAmount);
 
-		for (int stackLevel = 0; stackLevel < stackDisplayHeight + 1; ++stackLevel) {
+		println(indent + "PATH " + Character.toUpperCase(pathID));
 
-			for (int spaceIndex = 0; spaceIndex < path.getSpaces().size(); ++spaceIndex) {
-
-				printStackLevel(path, stackLevel, indent);
-
-				if (stackLevel == stackDisplayHeight + 1) {
-					println(pathID + "" + spaceIndex + "-");
-				}
-
-			}
-
+		for (int stackLevel = stackDisplayHeight - 1; stackLevel >= 0; --stackLevel) {
+			printStackLevel(path, stackLevel, indent);
 		}
+
+		print(indent);
+
+		for (int spaceIndex = 0; spaceIndex < path.getSpaces().size(); ++spaceIndex) {
+
+			String spaceString = pathID + "" + spaceIndex;
+
+			spaceString += path.getSpaces().get(spaceIndex).isTrampoline() ? "!"
+					: "-";
+
+			print(spaceString);
+		}
+
+		println("");
 	}
 
 	private String createIndent(int indentSpaces) {
@@ -57,14 +75,95 @@ public class View {
 	private void printStackLevel(Path path, int stackLevel, String indent) {
 		for (int pathSpace = 0; pathSpace < path.getSpaces().size(); ++pathSpace) {
 
-			if (stackLevel <= path.getSpaces().get(pathSpace).getPieces()
-					.size()) {
+			String pieceSymbol = " ";
 
-				print(indent
-						+ "["
-						+ path.getSpaces().get(pathSpace).getPieces()
-								.get(stackLevel) + "]");
+			if (stackLevel < path.getSpaces().get(pathSpace).getPieces().size()) {
+
+				pieceSymbol = path.getSpaces().get(pathSpace).getPieces()
+						.get(stackLevel).toString();
 			}
+
+			// print(indent + "[" + pieceSymbol + "]");
+
+			if (pathSpace == 0) {
+				// print(indent + "[" + stackLevel + "]"); // debug
+				print(indent + "[" + pieceSymbol + "]");
+			} else {
+				// print("[" + stackLevel + "]"); // debug
+				print("[" + pieceSymbol + "]");
+			}
+		}
+
+		println("");
+	}
+
+	private void printPlayersStartingStacksLevel(int stackLevel) {
+		int endOfLineIndex = 33;
+		// int startingStackIndex = 0;
+
+		for (Player player : game.getPlayers()) {
+			for (Deque<Piece> startingStack : player.getStartingStacks()) {
+
+				if (stackLevel < startingStack.size()) {
+					print("{" + player.getPlayerID() + "}");
+				} else {
+					print("   ");
+				}
+
+			}
+
+			if (game.getPlayers().indexOf(player) != game.getPlayers().size() - 1) {
+				print(" | ");
+			}
+		}
+
+		println("");
+	}
+
+	private void printPlayersStartingStacks() {
+		int highestStartingStackSize = 0;
+
+		for (Player player : game.getPlayers()) {
+			int playershighestStartingStackSize = 0;
+
+			for (Deque<Piece> startingStack : player.getStartingStacks()) {
+				int stackSize = startingStack.size();
+
+				playershighestStartingStackSize = stackSize > playershighestStartingStackSize ? stackSize
+						: playershighestStartingStackSize;
+
+			}
+
+			highestStartingStackSize = playershighestStartingStackSize > highestStartingStackSize ? playershighestStartingStackSize
+					: highestStartingStackSize;
+		}
+
+		for (int stackLevel = highestStartingStackSize - 1; stackLevel >= 0; --stackLevel) {
+			printPlayersStartingStacksLevel(stackLevel);
+		}
+
+		for (Player player : game.getPlayers()) {
+			String startingStackIDs = "-i--j--k-";
+			if (game.getPlayers().indexOf(player) != game.getPlayers().size() - 1) {
+				startingStackIDs += " | ";
+			}
+			print(startingStackIDs);
+		}
+
+		println("");
+
+		for (int playerNumber = 0; playerNumber < game.getPlayers().size() - 1; ++playerNumber) {
+			print("          | ");
+		}
+
+		println("");
+
+		for (Player player : game.getPlayers()) {
+			String playerDescription = "PLAYER " + player.getPlayerID();
+			if (game.getPlayers().indexOf(player) != game.getPlayers().size() - 1) {
+				playerDescription += "  | ";
+			}
+			print(playerDescription);
 		}
 
 		println("");
@@ -76,9 +175,5 @@ public class View {
 
 	private void print(Object object) {
 		System.out.print(object);
-	}
-
-	public static void main(String[] args) {
-		new View(new Game()).printGame();
 	}
 }

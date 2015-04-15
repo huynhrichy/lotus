@@ -6,4 +6,12 @@ public class Piece {
 	public Piece(char playerID) {
 		this.ownerID = playerID;
 	}
+
+	public String toString() {
+		return ownerID + "";
+	}
+
+	public char getOwnerID() {
+		return ownerID;
+	}
 }

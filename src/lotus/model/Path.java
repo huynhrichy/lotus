@@ -11,21 +11,20 @@ import java.util.List;
  *
  */
 public class Path {
-	//private char pathID;
+	private char pathID;
 	private List<Space> spaces;
-	
-	public Path(int numberOfSpaces) {
-		//this.pathID = '0';
+
+	public Path(char pathID, int numberOfSpaces) {
+		this.pathID = pathID;
 		this.spaces = new ArrayList<Space>();
-		
+
 		for (int spaceIndex = 0; spaceIndex < numberOfSpaces; ++spaceIndex) {
-			this.spaces.add(new Space());
+			this.spaces.add(new Space(pathID + "" + spaceIndex));
 		}
 	}
 
 	public List<Space> getSpaces() {
 		return spaces;
 	}
-	
-	
+
 }

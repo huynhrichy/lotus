@@ -15,10 +15,12 @@ import java.util.Stack;
 public class Space {
 	private List<Piece> pieces;
 	private boolean trampoline;
+	private String spaceID;
 
-	public Space() {
+	public Space(String spaceID) {
 		this.pieces = new ArrayList<Piece>();
 		this.trampoline = false;
+		this.spaceID = spaceID;
 	}
 
 	public List<Piece> getPieces() {
@@ -32,6 +34,21 @@ public class Space {
 	public void setTrampoline(boolean trampoline) {
 		this.trampoline = trampoline;
 	}
-	
-	
+
+	public String getSpaceID() {
+		return spaceID;
+	}
+
+	public void setSpaceID(String spaceID) {
+		this.spaceID = spaceID;
+	}
+
+	public String toString() {
+		return spaceID;
+	}
+
+	public Piece getTopPiece() {
+		return pieces.get(pieces.size() - 1);
+	}
+
 }

@@ -1,17 +1,18 @@
+PATH X
 [ ][ ][ ]
 [ ][ ][ ]
 [ ][ ][ ]
 [ ][ ][ ]
 [ ][ ][ ]
 x0-x1-x2-
-
+          PATH Z
           [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
           [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
           [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
           [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
           [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
-          z0-z1-z2-z3-z4!z5-z6-z7-z8-z9-z0-
-
+          z0-z1-z2-z3-z4!z5-z6-z7-z8-z9-z10-
+PATH Y
 [ ][ ][ ]
 [ ][ ][ ]
 [ ][ ][ ]
@@ -21,10 +22,33 @@ y0-y1-y2-
 
 ---
 
-{A} 	  {B}       {C}
-{A}{A}    {B}{B}    {C}{C}
-{A}{A}{A} {B}{B}{B} {C}{C}{C}
--i--j--k- -i--j--k- -i--j--k-
+{A}       | {B}       | {C}      
+{A}{A}    | {B}{B}    | {C}{C}   
+{A}{A}{A} | {B}{B}{B} | {C}{C}{C}
+-i--j--k- | -i--j--k- | -i--j--k-
+          |           | 
+PLAYER A  | PLAYER B  | PLAYER C
+
+---
+
+Player A's turn.
+
+
+
+---
+---
+---
+
+{3}{2}{1} | {3}{2}{1} | {3}{2}{1}
+-i--j--k- | -i--j--k- | -i--j--k-
+          |           |
+PLAYER A  | PLAYER B  | PLAYER C
+
+---
+
+PLAYER A STARTING STACKS: {3}{2}{1} 
+PLAYER B STARTING STACKS: {3}{2}{1} 
+PLAYER C STARTING STACKS: {3}{2}{1} 
 
 ---
 

@@ -16,8 +16,6 @@ public class Player {
 		this.startingStacks = new ArrayList<Deque<Piece>>();
 
 		initializeStartingStacks(numberOfPlayers);
-		
-		System.exit(0);
 
 	}
 
@@ -38,5 +36,15 @@ public class Player {
 			startingStacks.add(stack);
 		}
 	}
+
+	public char getPlayerID() {
+		return playerID;
+	}
+
+	public List<Deque<Piece>> getStartingStacks() {
+		return startingStacks;
+	}
+	
+	
 
 }
