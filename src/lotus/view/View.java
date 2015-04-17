@@ -7,6 +7,7 @@ import lotus.model.Game;
 import lotus.model.Path;
 import lotus.model.Piece;
 import lotus.model.Player;
+import lotus.model.Space;
 
 // mainly for a view of the game; controller will print out user prompts
 public class View {
@@ -20,16 +21,16 @@ public class View {
 		// takes in a board object?
 
 		printPath(game.getBoard().getPathX(), 'x', 0);
-		//println("");
+		// println("");
 
 		printPath(game.getBoard().getPathZ(), 'z', 10);
-		//println("");
+		// println("");
 
-		printPath(game.getBoard().getPathX(), 'y', 0);
+		printPath(game.getBoard().getPathY(), 'y', 0);
 
 		println("\n---\n");
 
-		printPlayersStartingStacks();
+		printPlayersInfo();
 
 		println("\n---\n");
 
@@ -102,9 +103,9 @@ public class View {
 		// int startingStackIndex = 0;
 
 		for (Player player : game.getPlayers()) {
-			for (Deque<Piece> startingStack : player.getStartingStacks()) {
+			for (Space startingStack : player.getStartingStacks()) {
 
-				if (stackLevel < startingStack.size()) {
+				if (stackLevel < startingStack.getHeight()) {
 					print("{" + player.getPlayerID() + "}");
 				} else {
 					print("   ");
@@ -120,14 +121,14 @@ public class View {
 		println("");
 	}
 
-	private void printPlayersStartingStacks() {
+	private void printPlayersInfo() {
 		int highestStartingStackSize = 0;
 
 		for (Player player : game.getPlayers()) {
 			int playershighestStartingStackSize = 0;
 
-			for (Deque<Piece> startingStack : player.getStartingStacks()) {
-				int stackSize = startingStack.size();
+			for (Space startingStack : player.getStartingStacks()) {
+				int stackSize = startingStack.getHeight();
 
 				playershighestStartingStackSize = stackSize > playershighestStartingStackSize ? stackSize
 						: playershighestStartingStackSize;
@@ -167,6 +168,20 @@ public class View {
 		}
 
 		println("");
+
+		for (Player player : game.getPlayers()) {
+
+			String piecesRemaining = player.getNumberOfPiecesRemaining()
+					+ " pieces";
+
+			if (game.getPlayers().indexOf(player) != game.getPlayers().size() - 1) {
+				piecesRemaining += "  | ";
+			}
+			print(piecesRemaining);
+		}
+
+		println("");
+
 	}
 
 	private void println(Object object) {

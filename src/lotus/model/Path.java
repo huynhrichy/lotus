@@ -13,10 +13,14 @@ import java.util.List;
 public class Path {
 	private char pathID;
 	private List<Space> spaces;
+	private boolean startingPath;
 
-	public Path(char pathID, int numberOfSpaces) {
+	public Path(char pathID, boolean startingPath) {
 		this.pathID = pathID;
+		this.startingPath = startingPath;
 		this.spaces = new ArrayList<Space>();
+
+		int numberOfSpaces = startingPath ? 3 : 11;
 
 		for (int spaceIndex = 0; spaceIndex < numberOfSpaces; ++spaceIndex) {
 			this.spaces.add(new Space(pathID + "" + spaceIndex));
@@ -25,6 +29,14 @@ public class Path {
 
 	public List<Space> getSpaces() {
 		return spaces;
+	}
+
+	public int getLength() {
+		return spaces.size();
+	}
+
+	public boolean isStartingPath() {
+		return startingPath;
 	}
 
 }

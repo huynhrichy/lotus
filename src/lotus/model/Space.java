@@ -23,6 +23,22 @@ public class Space {
 		this.spaceID = spaceID;
 	}
 
+	public boolean isEmpty() {
+		return pieces.isEmpty() ? true : false;
+	}
+
+	public void pushPiece(Piece piece) {
+		pieces.add(piece);
+	}
+
+	public Piece popPiece() {
+		if (!pieces.isEmpty()) {
+			return pieces.remove(pieces.size() - 1);
+		}
+
+		return null;
+	}
+
 	public List<Piece> getPieces() {
 		return pieces;
 	}
@@ -49,6 +65,10 @@ public class Space {
 
 	public Piece getTopPiece() {
 		return pieces.get(pieces.size() - 1);
+	}
+
+	public int getHeight() {
+		return pieces.size();
 	}
 
 }

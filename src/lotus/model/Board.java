@@ -10,9 +10,9 @@ public class Board {
 	private Path pathX, pathY, pathZ;
 
 	public Board() {
-		this.pathX = new Path('x', 3);
-		this.pathY = new Path('y', 3);
-		this.pathZ = new Path('z', 11);
+		this.pathX = new Path('x', true);
+		this.pathY = new Path('y', true);
+		this.pathZ = new Path('z', false);
 
 		this.pathZ.getSpaces().get(4).setTrampoline(true);
 	}
@@ -28,7 +28,5 @@ public class Board {
 	public Path getPathZ() {
 		return pathZ;
 	}
-	
-	
 
 }
