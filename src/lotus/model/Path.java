@@ -38,5 +38,9 @@ public class Path {
 	public boolean isStartingPath() {
 		return startingPath;
 	}
+	
+	public char getPathID() {
+		return pathID;
+	}
 
 }

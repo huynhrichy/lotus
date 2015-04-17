@@ -12,12 +12,14 @@ public class Player {
 	// private List<Deque<Piece>> startingStacks;
 	private List<Space> startingStacks;
 	private int numberOfPiecesRemaining;
+	//private boolean computerPlayer;
 
-	public Player(char playerID, int numberOfPlayers) {
+	public Player(char playerID, int numberOfPlayers/*, boolean computerPlayer*/) {
 		this.playerID = playerID;
 		// this.startingStacks = new ArrayList<Deque<Piece>>();
 		this.startingStacks = new ArrayList<Space>();
 		this.numberOfPiecesRemaining = 0;
+		//this.computerPlayer = computerPlayer;
 
 		initializeStartingStacks(numberOfPlayers);
 
@@ -56,11 +58,15 @@ public class Player {
 	public int getNumberOfPiecesRemaining() {
 		return numberOfPiecesRemaining;
 	}
-	
+
 	public void decrementNumberOfPiecesRemaining() {
 		if (numberOfPiecesRemaining > 0) {
 			--numberOfPiecesRemaining;
 		}
 	}
+
+/*	public boolean isComputerPlayer() {
+		return computerPlayer;
+	}*/
 
 }

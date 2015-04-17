@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+import lotus.model.ai.ComputerPlayer;
+
 public class Game {
 	private Board board;
 	private List<Player> players;
@@ -21,12 +23,35 @@ public class Game {
 		this.activePlayerID = ' ';
 	}
 
-	public void addPlayers(int numberOfPlayers) {
+	// public void addHumanPlayer() {
+	// players.add(new Player((char) ))
+	// }
+
+	public void addPlayers(boolean humanPlaying, int numberOfComputerPlayers) {
+		int startingASCIIValueOfPlayerID = 65;
+
+		int numberOfPlayers = humanPlaying ? 1 : 0;
+
+		numberOfPlayers += numberOfComputerPlayers;
+
+		if (humanPlaying) {
+			players.add(new Player((char) startingASCIIValueOfPlayerID,
+					numberOfPlayers));
+		}
+
+		for (int playerNumber = startingASCIIValueOfPlayerID + 1; playerNumber < numberOfPlayers
+				+ startingASCIIValueOfPlayerID; ++playerNumber) {
+			players.add(new ComputerPlayer((char) playerNumber, numberOfPlayers));
+		}
+	}
+
+	// for an all human game
+	public void addPlayersForHumanOnlyGame(int numberOfPlayers) {
 		int startingASCIIValue = 65;
 
 		for (int playerNumber = startingASCIIValue; playerNumber < numberOfPlayers
 				+ startingASCIIValue; ++playerNumber) {
-			this.players.add(new Player((char) playerNumber, numberOfPlayers));
+			players.add(new Player((char) playerNumber, numberOfPlayers));
 		}
 	}
 
@@ -61,6 +86,11 @@ public class Game {
 		this.gameWon = gameWon;
 	}
 
+	public Player getActivePlayer() {
+		return players.get(getActivePlayerIndex());
+	}
+
+	// deprecate cuz of getactiveplayer now? meh
 	public char getActivePlayerID() {
 		return activePlayerID;
 	}
@@ -124,7 +154,8 @@ public class Game {
 		int spaceIndex = -1;
 
 		for (Space space : selectedPath.getSpaces()) {
-			if (space.getSpaceID().equals(spaceOfMovingPiece.getSpaceID())) {
+			if (space.getSpaceID().equalsIgnoreCase(
+					spaceOfMovingPiece.getSpaceID())) {
 				spaceIndex = selectedPath.getSpaces().indexOf(space);
 				break;
 			}
@@ -133,7 +164,7 @@ public class Game {
 		return spaceIndex;
 	}
 
-	public void doMove(Space spaceOfMovingPiece, char pathID) {
+	public void doMove(Move move) {
 		// System.out.println("Valid move!");
 
 		// get the height of the stack on the space
@@ -144,6 +175,9 @@ public class Game {
 		// 2. if finish path x or y, go on z with any remaining moves
 		// 3. if past path z, reduce number of player's pieces in the game
 		// 4. also, trampoline
+
+		Space spaceOfMovingPiece = move.getSpace();
+		char pathID = move.getPathID();
 
 		Path selectedPath = getSelectedPath(pathID);
 
@@ -158,11 +192,12 @@ public class Game {
 				// go to z - change the path to it
 				// change the number of steps to move
 
-				//spacesToMove = spacesToMove
-				//		- (selectedPath.getLength() - 1 - spaceIndex);
-				
+				// spacesToMove = spacesToMove
+				// - (selectedPath.getLength() - 1 - spaceIndex);
+
 				// actually
-				spacesToMove = spacesToMove - 1 - (selectedPath.getLength() - 1 - spaceIndex);
+				spacesToMove = spacesToMove - 1
+						- (selectedPath.getLength() - 1 - spaceIndex);
 
 				spaceIndex = 0;
 
@@ -189,7 +224,7 @@ public class Game {
 		// if the gotten space wuz trampoline, recurse da ish using new data...
 
 		if (newSpace.isTrampoline()) {
-			doMove(newSpace, 'z');
+			doMove(new Move(newSpace, 'z'));
 		}
 
 	}
@@ -201,7 +236,8 @@ public class Game {
 
 	}
 
-	private int getActivePlayerIndex() {
+	// could prob change this to just get the active player... later
+	public int getActivePlayerIndex() {
 		return ((int) activePlayerID - 65);
 	}
 
@@ -225,4 +261,35 @@ public class Game {
 		}
 	}
 
+	private List<Move> getPossibleMovesFromThisPath(Path path) {
+		List<Move> possibleMoves = new ArrayList<Move>();
+
+		for (Space space : path.getSpaces()) {
+			if (!space.getPieces().isEmpty()
+					&& space.getTopPiece().getOwnerID() == activePlayerID) {
+				possibleMoves.add(new Move(space, path.getPathID()));
+			}
+		}
+
+		return possibleMoves;
+	}
+
+	public List<Move> getPossibleMoves() {
+		Player activePlayer = players.get(getActivePlayerIndex());
+
+		List<Move> possibleMoves = new ArrayList<Move>();
+
+		for (Space space : activePlayer.getStartingStacks()) {
+			if (!space.isEmpty()) {
+				possibleMoves.add(new Move(space, 'x'));
+				possibleMoves.add(new Move(space, 'y'));
+			}
+		}
+
+		possibleMoves.addAll(getPossibleMovesFromThisPath(board.getPathX()));
+		possibleMoves.addAll(getPossibleMovesFromThisPath(board.getPathY()));
+		possibleMoves.addAll(getPossibleMovesFromThisPath(board.getPathZ()));
+
+		return possibleMoves;
+	}
 }

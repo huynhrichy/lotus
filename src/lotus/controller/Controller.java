@@ -3,9 +3,11 @@ package lotus.controller;
 import java.util.Scanner;
 
 import lotus.model.Game;
+import lotus.model.Move;
 import lotus.model.Path;
 import lotus.model.Player;
 import lotus.model.Space;
+import lotus.model.ai.ComputerPlayer;
 import lotus.view.View;
 
 public class Controller implements Runnable {
@@ -22,7 +24,68 @@ public class Controller implements Runnable {
 		// this.input = "";
 	}
 
-	private void initializeGame() {
+	private void decidePlayers() {
+		System.out.print("Welcome to LOTUS. ");
+
+		boolean humanPlaying = isHumanPlaying();
+
+		int minimumNumberOfComputerPlayers = humanPlaying ? 2 : 3;
+
+		int numberOfComputerPlayers = decideNumberOfComputerPlayers(minimumNumberOfComputerPlayers);
+
+		game.addPlayers(humanPlaying, numberOfComputerPlayers);
+
+		game.setActivePlayerID(game.getPlayers().get(0).getPlayerID());
+
+	}
+
+	private int decideNumberOfComputerPlayers(int minimumNumberOfComputerPlayers) {
+		System.out.println("How many computer players will there be: "
+				+ minimumNumberOfComputerPlayers + " or "
+				+ (minimumNumberOfComputerPlayers + 1) + "?");
+
+		int numberOfComputerPlayers = -1;
+
+		while (numberOfComputerPlayers < minimumNumberOfComputerPlayers
+				|| numberOfComputerPlayers > minimumNumberOfComputerPlayers + 1) {
+
+			numberOfComputerPlayers = scanner.nextInt();
+
+		}
+
+		return numberOfComputerPlayers;
+	}
+
+	private boolean isHumanPlaying() {
+		System.out.println("Will you be playing? [Y/N]");
+
+		System.out
+				.println("(You alone can either play against computers, or watch them play against each other.)");
+
+		boolean validInput = false;
+		boolean humanPlaying = false;
+		String input = "";
+
+		while (!validInput) {
+			input = scanner.nextLine();
+
+			if (input.equalsIgnoreCase("yes") || input.equalsIgnoreCase("y")) {
+				validInput = true;
+				humanPlaying = true;
+
+			} else if (input.equalsIgnoreCase("no")
+					|| input.equalsIgnoreCase("n")) {
+
+				validInput = true;
+
+			}
+		}
+
+		return humanPlaying;
+	}
+
+	// for humanz
+	private int decideNumberOfPlayers() {
 		System.out.println("Welcome to LOTUS. Will there be 3 or 4 players?");
 
 		int numberOfPlayers = -1;
@@ -31,9 +94,16 @@ public class Controller implements Runnable {
 			numberOfPlayers = scanner.nextInt();
 		}
 
-		game.addPlayers(numberOfPlayers);
+		return numberOfPlayers;
+	}
 
-		game.setActivePlayerID(game.getPlayers().get(0).getPlayerID());
+	private void initializeGame() {
+		// for human only game
+		// game.addPlayers(decideNumberOfPlayers());
+
+		// game.addPlayers(humanPlaying, numberOfComputerPlayers);
+
+		decidePlayers();
 	}
 
 	public void run() {
@@ -42,24 +112,44 @@ public class Controller implements Runnable {
 		view.printGame();
 
 		while (!game.isGameWon()) {
+			doPlayerTurn();
 
-			if (game.isAMoveAvailable()) {
-				promptPlayerMove();
-			} else {
-				
-				System.out.println("No moves available for Player "
-						+ game.getActivePlayerID() + "!");
-				
-			}
-
-			if (game.didActivePlayerWin()) {
-				finishGame();
-			}
-
-			game.switchActivePlayerID();
-
-			view.printGame();
+			update();
 		}
+	}
+
+	private void doPlayerTurn() {
+		if (game.isAMoveAvailable()) {
+
+			if (game.getActivePlayer() instanceof ComputerPlayer) {
+				// do computer move
+				// atm just do a random 1? or the first available 1? or skip
+				// turn?
+
+				Move move = ((ComputerPlayer) game.getActivePlayer())
+						.chooseMove(game.getPossibleMoves());
+
+				game.doMove(move);
+			} else {
+				promptPlayerMove();
+			}
+
+		} else {
+
+			System.out.println("No moves available for Player "
+					+ game.getActivePlayerID() + "!");
+
+		}
+	}
+
+	private void update() {
+		if (game.didActivePlayerWin()) {
+			finishGame();
+		}
+
+		game.switchActivePlayerID();
+
+		view.printGame();
 	}
 
 	private void finishGame() {
@@ -73,6 +163,8 @@ public class Controller implements Runnable {
 
 	private void promptPlayerMove() {
 		String input = "";
+
+		// Move move = new
 
 		// boolean validInput = false;
 
@@ -112,7 +204,9 @@ public class Controller implements Runnable {
 
 		}
 
-		game.doMove(spaceOfMovingPiece, pathID);
+		// Move move = new Move(spaceOfMovingPiece, pathID)
+
+		game.doMove(new Move(spaceOfMovingPiece, pathID));
 
 	}
 
@@ -136,7 +230,7 @@ public class Controller implements Runnable {
 		}
 
 		for (Space space : selectedPath.getSpaces()) {
-			if (userInput.equals(space.getSpaceID())
+			if (userInput.equalsIgnoreCase(space.getSpaceID())
 					&& !space.getPieces().isEmpty()
 					&& space.getTopPiece().getOwnerID() == game
 							.getActivePlayerID()) {
@@ -157,24 +251,6 @@ public class Controller implements Runnable {
 
 		Space spaceOfMovingPiece = activePlayer.getStartingStacks().get(
 				(int) (userInput.charAt(0)) - 105);
-
-		/*
-		 * switch (userInput.charAt(0)) { case 'i':
-		 * 
-		 * spaceOfMovingPiece = activePlayer.getStartingStacks().get(0);
-		 * 
-		 * break; case 'j':
-		 * 
-		 * spaceOfMovingPiece = activePlayer.getStartingStacks().get(1);
-		 * 
-		 * break; case 'k':
-		 * 
-		 * spaceOfMovingPiece = activePlayer.getStartingStacks().get(2);
-		 * 
-		 * break; default:
-		 * 
-		 * return null; }
-		 */
 
 		if (userInput.charAt(1) != 'x' && userInput.charAt(1) != 'y') {
 			return null;
