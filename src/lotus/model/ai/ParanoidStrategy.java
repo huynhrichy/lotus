@@ -58,6 +58,10 @@ public class ParanoidStrategy extends Strategy implements Serializable {
 		int bestValue = -99999;
 
 		Move nextMove = null;
+		
+int indexOfBestMove = 0;
+
+		List<Move> possibleMoves = game.getPossibleMoves();
 
 		// List<Space> possibleSpaces = game.get
 
@@ -69,16 +73,19 @@ public class ParanoidStrategy extends Strategy implements Serializable {
 		//List<Node> childrenNodes = new ArrayList<Node>(); // ...
 
 		// !!! chekkk
-		for (Node child : childrenNodes) {
-			int childValue = getParanoidValue(child, 1);
+		for (Move child : possibleMoves) {
+			int childValue = getParanoidValue(new Node(game, child, false), 1);
 
 			// child.setValue(childValue);
 
 			if (childValue > bestValue) {
-				nextMove = child.getMove();
+				indexOfBestMove = possibleMoves.indexOf(child);
 				bestValue = childValue;
 			}
 		}
+		
+		nextMove = possibleMoves.get(indexOfBestMove);
+
 
 		return nextMove;
 	}

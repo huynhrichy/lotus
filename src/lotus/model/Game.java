@@ -42,9 +42,10 @@ public class Game implements Serializable {
 		if (humanPlaying) {
 			players.add(new Player((char) startingASCIIValueOfPlayerID,
 					numberOfPlayers));
+			++startingASCIIValueOfPlayerID;
 		}
 
-		for (int playerNumber = startingASCIIValueOfPlayerID + 1; playerNumber < numberOfPlayers
+		for (int playerNumber = startingASCIIValueOfPlayerID/* + 1*/; playerNumber < numberOfPlayers
 				+ startingASCIIValueOfPlayerID; ++playerNumber) {
 
 			players.add(createComputerPlayer(playerNumber, numberOfPlayers));
