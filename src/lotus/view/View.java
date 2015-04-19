@@ -40,6 +40,12 @@ public class View {
 	private void printPath(Path path, char pathID, int indentAmount) {
 		int stackDisplayHeight = 5;
 
+		for (Space stack : path.getSpaces()) {
+			if (stack.getHeight() > stackDisplayHeight) {
+				stackDisplayHeight = stack.getHeight();
+			}
+		}
+
 		String indent = createIndent(indentAmount);
 
 		println(indent + "PATH " + Character.toUpperCase(pathID));

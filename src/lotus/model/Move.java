@@ -1,5 +1,7 @@
 package lotus.model;
 
+import java.io.Serializable;
+
 
 /**
  * Represents a move a player can make with a piece on the board.
@@ -7,7 +9,7 @@ package lotus.model;
  * @author Richard
  *
  */
-public class Move {
+public class Move implements Serializable {
 	private Space space;
 	private char pathID;
 	

@@ -1,5 +1,6 @@
 package lotus.model;
 
+import java.io.Serializable;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
@@ -7,7 +8,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class Player {
+/**
+ * Implements Serializable for deep copying.
+ * 
+ * @author Richard
+ *
+ */
+public class Player implements Serializable {
 	private char playerID;
 	// private List<Deque<Piece>> startingStacks;
 	private List<Space> startingStacks;

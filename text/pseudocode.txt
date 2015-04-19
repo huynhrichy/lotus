@@ -1,0 +1,20 @@
+
+function integer paranoid(node, depth)
+	if the node is a winning node or the depth is 0 (reached the search depth) then
+		return the utility value of the node
+	else
+		if the node is a maximizer node then
+			value first set at negative infinity to assume a loss
+			for every child of the node (perhaps made from the possible moves), do
+				set value to be the max of the previous value versus paranoid(child, depth - 1)
+			end for
+		else
+			value set to be positive infinity to assume a loss
+				set value to be the min of the previous value versus paranoid(child, depth - 1)			
+		end if
+		return value
+	end if
+	return value?
+end function
+	 
+	 

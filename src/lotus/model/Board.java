@@ -1,12 +1,15 @@
 package lotus.model;
 
+import java.io.Serializable;
+
 /**
- * Represents the board game's layout and spaces.
+ * Represents the board game's layout and spaces. Implements Serializable for
+ * deep cloning.
  * 
  * @author Richard
  *
  */
-public class Board {
+public class Board implements Serializable {
 	private Path pathX, pathY, pathZ;
 
 	public Board() {

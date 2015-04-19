@@ -1,13 +1,22 @@
 package lotus.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
 import lotus.model.ai.ComputerPlayer;
+import lotus.model.ai.ParanoidStrategy;
+import lotus.model.ai.Strategy;
 
-public class Game {
+/**
+ * Implements Serializable for deep copying.
+ * 
+ * @author Richard
+ *
+ */
+public class Game implements Serializable {
 	private Board board;
 	private List<Player> players;
 	private boolean gameWon;
@@ -23,10 +32,6 @@ public class Game {
 		this.activePlayerID = ' ';
 	}
 
-	// public void addHumanPlayer() {
-	// players.add(new Player((char) ))
-	// }
-
 	public void addPlayers(boolean humanPlaying, int numberOfComputerPlayers) {
 		int startingASCIIValueOfPlayerID = 65;
 
@@ -41,8 +46,22 @@ public class Game {
 
 		for (int playerNumber = startingASCIIValueOfPlayerID + 1; playerNumber < numberOfPlayers
 				+ startingASCIIValueOfPlayerID; ++playerNumber) {
-			players.add(new ComputerPlayer((char) playerNumber, numberOfPlayers));
+
+			players.add(createComputerPlayer(playerNumber, numberOfPlayers));
 		}
+	}
+
+	// for putting the strategy
+	private ComputerPlayer createComputerPlayer(int playerNumber,
+			int numberOfPlayers) {
+		ComputerPlayer computerPlayer = new ComputerPlayer((char) playerNumber,
+				numberOfPlayers);
+
+		Strategy strategy = new ParanoidStrategy(this, computerPlayer);
+
+		computerPlayer.setStrategy(strategy);
+
+		return computerPlayer;
 	}
 
 	// for an all human game
@@ -53,21 +72,6 @@ public class Game {
 				+ startingASCIIValue; ++playerNumber) {
 			players.add(new Player((char) playerNumber, numberOfPlayers));
 		}
-	}
-
-	private void resetGame() {
-
-	}
-
-	private void movePiece(int playerNumber, char pathID, int pathIndex) {
-	}
-
-	private boolean isMovePossible(int playerNumber, char pathID, int pathIndex) {
-		return false;
-	}
-
-	private int getNumberOfSpacesToMove(Move move) {
-		return 0;
 	}
 
 	public Board getBoard() {
@@ -142,7 +146,8 @@ public class Game {
 	private boolean isAMoveAvailableOnThisPath(Path path) {
 
 		for (Space space : path.getSpaces()) {
-			if (space.getTopPiece().getOwnerID() == activePlayerID) {
+			if (!space.isEmpty()
+					&& space.getTopPiece().getOwnerID() == activePlayerID) {
 				return true;
 			}
 		}
@@ -150,8 +155,9 @@ public class Game {
 		return false;
 	}
 
+	// hurrr
 	private int getIndexOfSpace(Space spaceOfMovingPiece, Path selectedPath) {
-		int spaceIndex = -1;
+		int spaceIndex = -1; // instead of -1, 0? -1 good for starting!!!
 
 		for (Space space : selectedPath.getSpaces()) {
 			if (space.getSpaceID().equalsIgnoreCase(
@@ -261,7 +267,7 @@ public class Game {
 		}
 	}
 
-	private List<Move> getPossibleMovesFromThisPath(Path path) {
+	private List<Move> getPossibleMoves(Path path) {
 		List<Move> possibleMoves = new ArrayList<Move>();
 
 		for (Space space : path.getSpaces()) {
@@ -286,9 +292,9 @@ public class Game {
 			}
 		}
 
-		possibleMoves.addAll(getPossibleMovesFromThisPath(board.getPathX()));
-		possibleMoves.addAll(getPossibleMovesFromThisPath(board.getPathY()));
-		possibleMoves.addAll(getPossibleMovesFromThisPath(board.getPathZ()));
+		possibleMoves.addAll(getPossibleMoves(board.getPathX()));
+		possibleMoves.addAll(getPossibleMoves(board.getPathY()));
+		possibleMoves.addAll(getPossibleMoves(board.getPathZ()));
 
 		return possibleMoves;
 	}

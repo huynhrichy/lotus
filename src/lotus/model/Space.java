@@ -1,5 +1,6 @@
 package lotus.model;
 
+import java.io.Serializable;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
@@ -12,7 +13,7 @@ import java.util.Stack;
  * @author Richard
  *
  */
-public class Space {
+public class Space implements Serializable {
 	private List<Piece> pieces;
 	private boolean trampoline;
 	private String spaceID;
