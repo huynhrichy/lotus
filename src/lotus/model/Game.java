@@ -3,11 +3,15 @@ package lotus.model;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 import java.util.TreeSet;
 
+import lotus.model.ai.BestReplyStrategy;
 import lotus.model.ai.ComputerPlayer;
+import lotus.model.ai.MaxNStrategy;
 import lotus.model.ai.ParanoidStrategy;
+import lotus.model.ai.RandomStrategy;
 import lotus.model.ai.Strategy;
 
 /**
@@ -45,7 +49,7 @@ public class Game implements Serializable {
 			++startingASCIIValueOfPlayerID;
 		}
 
-		for (int playerNumber = startingASCIIValueOfPlayerID/* + 1*/; playerNumber < numberOfPlayers
+		for (int playerNumber = startingASCIIValueOfPlayerID/* + 1 */; playerNumber < numberOfPlayers
 				+ startingASCIIValueOfPlayerID; ++playerNumber) {
 
 			players.add(createComputerPlayer(playerNumber, numberOfPlayers));
@@ -58,7 +62,26 @@ public class Game implements Serializable {
 		ComputerPlayer computerPlayer = new ComputerPlayer((char) playerNumber,
 				numberOfPlayers);
 
-		Strategy strategy = new ParanoidStrategy(this, computerPlayer);
+		Random random = new Random();
+
+		int strategyChoice = random.nextInt(3);
+
+		Strategy strategy = null;
+
+		switch (strategyChoice) {
+		case 0:
+			strategy = new ParanoidStrategy(this, computerPlayer);
+			break;
+		case 1:
+			strategy = new MaxNStrategy(this, computerPlayer);
+			break;
+		case 2:
+			strategy = new BestReplyStrategy(this, computerPlayer);
+			break;
+		default:
+			strategy = new MaxNStrategy(this, computerPlayer);
+			break;
+		}
 
 		computerPlayer.setStrategy(strategy);
 
@@ -245,7 +268,16 @@ public class Game implements Serializable {
 
 	// could prob change this to just get the active player... later
 	public int getActivePlayerIndex() {
-		return ((int) activePlayerID - 65);
+		return getPlayerIndex(activePlayerID);
+	}
+
+	public int getPlayerIndex(char playerID) {
+		return ((int) playerID - 65);
+	}
+
+	
+	public int getOpponentIndex() {
+		return new Random().nextInt(players.size());
 	}
 
 	public void switchActivePlayerID() {
@@ -298,5 +330,55 @@ public class Game implements Serializable {
 		possibleMoves.addAll(getPossibleMoves(board.getPathZ()));
 
 		return possibleMoves;
+	}
+
+	public int getHeightOfHighestStack(int playerIndex) {
+		int bestHeight = 0;
+
+		for (Space stack : players.get(playerIndex).getStartingStacks()) {
+
+			if (stack.getHeight() > bestHeight
+					&& !stack.isEmpty()
+					&& ((int) stack.getTopPiece().getOwnerID() - 65) == playerIndex) {
+
+				bestHeight = stack.getHeight();
+
+			}
+		}
+
+		for (Space stack : board.getPathX().getSpaces()) {
+
+			if (stack.getHeight() > bestHeight
+					&& !stack.isEmpty()
+					&& ((int) stack.getTopPiece().getOwnerID() - 65) == playerIndex) {
+
+				bestHeight = stack.getHeight();
+
+			}
+		}
+
+		for (Space stack : board.getPathY().getSpaces()) {
+
+			if (stack.getHeight() > bestHeight
+					&& !stack.isEmpty()
+					&& ((int) stack.getTopPiece().getOwnerID() - 65) == playerIndex) {
+
+				bestHeight = stack.getHeight();
+
+			}
+		}
+
+		for (Space stack : board.getPathZ().getSpaces()) {
+
+			if (stack.getHeight() > bestHeight
+					&& !stack.isEmpty()
+					&& ((int) stack.getTopPiece().getOwnerID() - 65) == playerIndex) {
+
+				bestHeight = stack.getHeight();
+
+			}
+		}
+
+		return bestHeight;
 	}
 }

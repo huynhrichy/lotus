@@ -28,8 +28,12 @@ y0-y1-y2-
 -i--j--k- | -i--j--k- | -i--j--k-
           |           | 
 PLAYER A  | PLAYER B  | PLAYER C
-10 pieces | 10 pieces | 10 pieces
-
+10 pieces | 10 pieces | 10 pieces 
+(Random)  | (Random)  | (Random)
+(Paranoid)| (Paranoid)| (Paranoid)
+(Max-N)   | (Max-N)   | (Max-N)
+(BReply)  | (BReply)  | (BReply)
+         
 ---
 
 Player A's turn.

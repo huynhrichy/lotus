@@ -8,6 +8,7 @@ import lotus.model.Path;
 import lotus.model.Piece;
 import lotus.model.Player;
 import lotus.model.Space;
+import lotus.model.ai.ComputerPlayer;
 
 // mainly for a view of the game; controller will print out user prompts
 public class View {
@@ -186,6 +187,24 @@ public class View {
 			print(piecesRemaining);
 		}
 
+		println("");
+
+		for (Player player : game.getPlayers()) {
+			String strategy = "";
+			
+			if (player instanceof ComputerPlayer) {
+				strategy += ((ComputerPlayer) player).getStrategy();
+			} else {
+				strategy = "          ";
+			}
+			
+
+			if (game.getPlayers().indexOf(player) != game.getPlayers().size() - 1) {
+				strategy += "| ";
+			}
+			
+			print(strategy);
+		}
 		println("");
 
 	}

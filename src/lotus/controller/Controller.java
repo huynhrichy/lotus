@@ -40,20 +40,22 @@ public class Controller implements Runnable {
 	}
 
 	private int decideNumberOfComputerPlayers(int minimumNumberOfComputerPlayers) {
-		System.out.println("How many computer players will there be: "
-				+ minimumNumberOfComputerPlayers + " or "
-				+ (minimumNumberOfComputerPlayers + 1) + "?");
+		// System.out.println("How many computer players will there be: "
+		// + minimumNumberOfComputerPlayers + " or "
+		// + (minimumNumberOfComputerPlayers + 1) + "?");
 
 		int numberOfComputerPlayers = -1;
 
-		while (numberOfComputerPlayers < minimumNumberOfComputerPlayers
-				|| numberOfComputerPlayers > minimumNumberOfComputerPlayers + 1) {
+		// while (numberOfComputerPlayers < minimumNumberOfComputerPlayers
+		// || numberOfComputerPlayers > minimumNumberOfComputerPlayers + 1) {
 
-			numberOfComputerPlayers = scanner.nextInt();
+		// numberOfComputerPlayers = scanner.nextInt();
 
-		}
+		// }
 
-		return numberOfComputerPlayers;
+		// return numberOfComputerPlayers;
+
+		return minimumNumberOfComputerPlayers + 1;
 	}
 
 	private boolean isHumanPlaying() {

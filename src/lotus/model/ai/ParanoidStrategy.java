@@ -16,61 +16,25 @@ public class ParanoidStrategy extends Strategy implements Serializable {
 		// TODO Auto-generated constructor stub
 	}
 
-	// set maximizer hurr
-	private List<Node> getChildrenNodes(Game game) {
-		List<Node> childrenNodes = new ArrayList<Node>();
 
-		List<Move> possibleMoves = game.getPossibleMoves();
-
-		for (Move move : possibleMoves) {
-			Game newGameState = (Game) deepClone(game);
-
-			// switch aktiv playa
-
-
-			//Move newMove = new Move(move.getSpace(), move.getPathID()); // ?? EH?!!??! i got movez...
-
-			// set maximizer hurr
-			
-
-			//newGameState.doMove(move); // ?!?!?
-			
-			
-			// EH?!?!?!
-			//if (move.getSpace().getHeight() <= 0) {
-			//	continue;
-			//}
-
-			boolean maximizer = newGameState.getActivePlayerID() == player
-					.getPlayerID() ? true : false;
-			
-			newGameState.switchActivePlayerID();
-			
-			Node node = new Node(newGameState, move, maximizer);
-
-			childrenNodes.add(node);
-		}
-
-		return childrenNodes;
-	}
 
 	public Move getNextMove() {
 		int bestValue = -99999;
 
 		Move nextMove = null;
-		
-int indexOfBestMove = 0;
+
+		int indexOfBestMove = 0;
 
 		List<Move> possibleMoves = game.getPossibleMoves();
 
 		// List<Space> possibleSpaces = game.get
 
 		// le first node?
-		 //Node rootNode = new Node(game, null, true);
+		// Node rootNode = new Node(game, null, true);
 
 		List<Node> childrenNodes = getChildrenNodes(game); // !!!
-		
-		//List<Node> childrenNodes = new ArrayList<Node>(); // ...
+
+		// List<Node> childrenNodes = new ArrayList<Node>(); // ...
 
 		// !!! chekkk
 		for (Move child : possibleMoves) {
@@ -83,9 +47,8 @@ int indexOfBestMove = 0;
 				bestValue = childValue;
 			}
 		}
-		
-		nextMove = possibleMoves.get(indexOfBestMove);
 
+		nextMove = possibleMoves.get(indexOfBestMove);
 
 		return nextMove;
 	}
@@ -112,5 +75,18 @@ int indexOfBestMove = 0;
 		}
 
 		return value;
+	}
+	
+
+	private int getHeuristicValue(Node node) {
+
+		//return node.getMove().getSpace().getHeight();
+
+		return node.getGame().getHeightOfHighestStack(
+				node.getGame().getPlayerIndex(player.getPlayerID()));
+	}
+	
+	public String toString() {
+		return "(Paranoid)";
 	}
 }

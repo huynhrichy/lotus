@@ -5,6 +5,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -39,6 +40,42 @@ public abstract class Strategy implements Serializable {
 	public void setPlayer(Player player) {
 		this.player = player;
 	}
+	
+	// set maximizer hurr
+	protected List<Node> getChildrenNodes(Game game) {
+		List<Node> childrenNodes = new ArrayList<Node>();
+
+		List<Move> possibleMoves = game.getPossibleMoves();
+
+		for (Move move : possibleMoves) {
+			Game newGameState = (Game) deepClone(game);
+
+			// switch aktiv playa
+
+			// Move newMove = new Move(move.getSpace(), move.getPathID()); // ??
+			// EH?!!??! i got movez...
+
+			// set maximizer hurr
+
+			// newGameState.doMove(move); // ?!?!?
+
+			// EH?!?!?!
+			// if (move.getSpace().getHeight() <= 0) {
+			// continue;
+			// }
+
+			boolean maximizer = newGameState.getActivePlayerID() == player
+					.getPlayerID() ? true : false;
+
+			newGameState.switchActivePlayerID();
+
+			Node node = new Node(newGameState, move, maximizer);
+
+			childrenNodes.add(node);
+		}
+
+		return childrenNodes;
+	}
 
 	/**
 	 * This method makes a "deep clone" of any Java object it is given. By Alvin
@@ -67,18 +104,5 @@ public abstract class Strategy implements Serializable {
 	protected boolean isTerminalNodeReached(Node node) {
 		// maybe just check all the piece counts and see if one of them is zero?
 		return node.getGame().didActivePlayerWin();
-	}
-	
-	public Move getNextMoveRandomly() {
-		Random random = new Random();
-
-		List<Move> possibleMoves = game.getPossibleMoves();
-
-		return possibleMoves.get(random.nextInt(possibleMoves.size()));
-	}
-
-	protected int getHeuristicValue(Node node) {
-
-		return node.getMove().getSpace().getHeight();
 	}
 }
